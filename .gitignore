@@ -1,0 +1,10 @@
+!data/cache/.gitkeep
+.vagrant/
+/phpunit.xml
+/vendor/
+composer.lock
+config/development.config.php
+config/autoload/local.php
+data/cache/*
+.phpunit.result.cache
+.phpcs-cache

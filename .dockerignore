@@ -1,0 +1,7 @@
+.git
+.vagrant
+vendor/
+data/cache/*
+!data/cache/.gitkeep
+node_modules
+*.log

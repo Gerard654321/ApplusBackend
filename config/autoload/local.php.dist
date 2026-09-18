@@ -1,0 +1,15 @@
+<?php
+
+// Copy this file to local.php (gitignored) and fill in real values
+// for local development. In production (Render), these same keys
+// are supplied via environment variables instead -- see
+// config/autoload/global.php.
+return [
+    'db' => [
+        'database' => 'postgres',
+        'username' => '',
+        'password' => '',
+        'hostname' => '',
+        'port'     => '5432',
+    ],
+];
