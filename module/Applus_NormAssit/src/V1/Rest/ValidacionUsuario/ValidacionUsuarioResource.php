@@ -5,15 +5,18 @@ use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
 use Laminas\Stdlib\Parameters;
 use Business\Service\UneApplusService;
+use Business\Model\AppUsuariosTable;
 use Business\Utility\ApiResponse;
 
 class ValidacionUsuarioResource extends AbstractResourceListener
 {
     private $uneApplusService;
+    private $appUsuariosTable;
 
-    public function __construct(UneApplusService $uneApplusService)
+    public function __construct(UneApplusService $uneApplusService, AppUsuariosTable $appUsuariosTable)
     {
         $this->uneApplusService = $uneApplusService;
+        $this->appUsuariosTable = $appUsuariosTable;
     }
 
     /**
@@ -79,7 +82,17 @@ class ValidacionUsuarioResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        $usuario = $this->appUsuariosTable->getByCodigo($id)->current();
+
+        if (!$usuario) {
+            return new ApiProblem(404, 'Usuario no encontrado.');
+        }
+
+        $data = $usuario->getArrayCopy();
+        unset($data['PASSWORD']);
+
+        $response = new ApiResponse('', ApiResponse::SUCCESS, $data);
+        return $response->toHttpResponse();
     }
 
     /**
