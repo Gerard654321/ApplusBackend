@@ -4,7 +4,6 @@ namespace Business\Model;
 
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\Db\ResultSet\ResultSetInterface;
-use Laminas\Db\Sql\Select;
 
 /**
  * Description of DocumentsAppTable
@@ -21,7 +20,7 @@ class DocumentsAppTable
     }
 
     /**
-     * Devuelve todos los documentos
+     * Devuelve todos los documentos.
      *
      * @return ResultSetInterface
      */
@@ -31,7 +30,7 @@ class DocumentsAppTable
     }
 
     /**
-     * Devuelve un documento en base al id del documento
+     * Devuelve un documento en base al ID_DOC.
      *
      * @param int $idDoc
      * @return ResultSetInterface
@@ -42,34 +41,43 @@ class DocumentsAppTable
     }
 
     /**
-     * Devuelve los distintos tipos de documentos registrados
+     * Devuelve los documentos de un usuario filtrados por tipo de documento.
      *
+     * @param string $userData
+     * @param string $typeDocument
      * @return ResultSetInterface
      */
-    public function getTypeDocuments(): ResultSetInterface
+    public function getByUserDataAndType(string $userData, string $typeDocument): ResultSetInterface
     {
-        return $this->tableGateway->select(function (Select $select) {
-            $select->columns(['TYPE_DOCUMENTS'])
-                ->quantifier(Select::QUANTIFIER_DISTINCT);
-        });
+        return $this->tableGateway->select([
+            'USER_DATA' => $userData,
+            'TYPE_DOCUMENT' => $typeDocument,
+        ]);
     }
 
     /**
-     * Edita solo el nombre, la descripcion, el estado y la fecha de expiración de un documento existente
+     * Devuelve los documentos de un tipo de documento determinado.
+     *
+     * @param string $typeDocument
+     * @return ResultSetInterface
+     */
+    public function getByTypeDocument(string $typeDocument): ResultSetInterface
+    {
+        return $this->tableGateway->select(['TYPE_DOCUMENT' => $typeDocument]);
+    }
+
+    /**
+     * Actualiza unicamente la fecha de expiracion de un documento.
      *
      * @param int $idDoc
-     * @param DocumentsAppEntity $documento
+     * @param string $expirationDate
      * @return int Filas afectadas
      */
-    public function editDocument(int $idDoc, DocumentsAppEntity $documento): int
+    public function updateExpirationDate(int $idDoc, string $expirationDate): int
     {
-        $data = [
-            'NAME_DOC'        => $documento->NAME_DOC,
-            'DESCRIPTION_DOC' => $documento->DESCRIPTION_DOC,
-            'STATUS'          => $documento->STATUS,
-            'EXPIRATION_DATE' => $documento->EXPIRATION_DATE,
-        ];
-
-        return $this->tableGateway->update($data, ['ID_DOC' => $idDoc]);
+        return $this->tableGateway->update(
+            ['EXPIRATION_DATE' => $expirationDate],
+            ['ID_DOC' => $idDoc]
+        );
     }
 }

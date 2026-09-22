@@ -89,3 +89,7 @@ composer cs-fix # Corrige el estilo de código automáticamente
 ## Despliegue
 
 El despliegue en Render usa el `Dockerfile` de la raíz del proyecto (imagen autocontenida, instala dependencias en el build). La configuración de variables de entorno para producción está en `render.yaml`.
+
+---
+
+Backend diseñado por Gerardo Caldas de GCode Software 2026

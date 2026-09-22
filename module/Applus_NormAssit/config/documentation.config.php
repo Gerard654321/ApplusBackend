@@ -107,4 +107,49 @@ Errores posibles según el caso: "Usuario no encontrado.", "Usuario inactivo.", 
             ],
         ],
     ],
+    'Applus_NormAssit\\V1\\Rest\\DocumentosApplus\\Controller' => [
+        'description' => 'Consulta y actualización de los documentos de la app (tabla DOCUMENTS_APP).',
+        'collection' => [
+            'GET' => [
+                'description' => 'Devuelve documentos, con filtros opcionales por query param. Sin ningun parametro trae todos. Con "typeDocument" filtra por tipo de documento. Con "userData" y "typeDocument" juntos filtra por el usuario dueño del documento y el tipo.',
+                'request' => 'Todos los documentos:
+GET /applus/documentos-applus
+
+Por tipo de documento:
+GET /applus/documentos-applus?typeDocument=DNI
+
+Por usuario y tipo de documento:
+GET /applus/documentos-applus?userData=SPENA&typeDocument=DNI',
+                'response' => '{
+    "type": "success",
+    "message": "",
+    "documentos": [
+        {
+            "ID_DOC": 1,
+            "NAME_DOC": "...",
+            "EXPIRATION_DATE": "2026-12-31",
+            "USER_DATA": "SPENA",
+            "DOCUMENT_PDF": "...",
+            "ROUTE_DOCUMENT": "...",
+            "TYPE_DOCUMENT": "DNI"
+        }
+    ]
+}',
+            ],
+        ],
+        'entity' => [
+            'PUT' => [
+                'description' => 'Actualiza unicamente la fecha de expiracion (EXPIRATION_DATE) de un documento. No toca ningun otro campo.',
+                'request' => '{
+    "expirationDate": "2027-06-30"
+}',
+                'response' => 'Actualizado:
+{"type": "success", "message": "Fecha de expiracion actualizada correctamente.", "Actualizacion": 1}
+
+Si falta expirationDate en el body, responde 400 con: "Falta la fecha de expiracion."
+
+Si el ID_DOC no existe, responde 404 con: "Documento no encontrado."',
+            ],
+        ],
+    ],
 ];

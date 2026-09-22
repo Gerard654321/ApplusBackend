@@ -12,23 +12,21 @@ class DocumentsAppEntity
 {
     public $ID_DOC;
     public $NAME_DOC;
-    public $DESCRIPTION_DOC;
-    public $STATUS;
     public $EXPIRATION_DATE;
-    public $REGISTERED_USER;
+    public $USER_DATA;
     public $DOCUMENT_PDF;
-    public $TYPE_DOCUMENTS;
+    public $ROUTE_DOCUMENT;
+    public $TYPE_DOCUMENT;
 
     public function exchangeArray(array $data)
     {
         $this->ID_DOC = $data['ID_DOC'] ?? null;
         $this->NAME_DOC = $data['NAME_DOC'] ?? null;
-        $this->DESCRIPTION_DOC = $data['DESCRIPTION_DOC'] ?? null;
-        $this->STATUS = $data['STATUS'] ?? null;
         $this->EXPIRATION_DATE = $data['EXPIRATION_DATE'] ?? null;
-        $this->REGISTERED_USER = $data['REGISTERED_USER'] ?? null;
+        $this->USER_DATA = $data['USER_DATA'] ?? null;
         $this->DOCUMENT_PDF = $data['DOCUMENT_PDF'] ?? null;
-        $this->TYPE_DOCUMENTS = $data['TYPE_DOCUMENTS'] ?? null;
+        $this->ROUTE_DOCUMENT = $data['ROUTE_DOCUMENT'] ?? null;
+        $this->TYPE_DOCUMENT = $data['TYPE_DOCUMENT'] ?? null;
     }
 
     public function getArrayCopy()
