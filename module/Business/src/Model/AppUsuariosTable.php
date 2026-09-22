@@ -29,4 +29,15 @@ class AppUsuariosTable
     {
         return $this->tableGateway->select(['CODIGO_USUARIO' => trim($codigoUsuario)]);
     }
+
+    /**
+     * Devuelve los usuarios cuyo TIPO_USUARIO coincide con el indicado.
+     *
+     * @param int $tipoUsuario
+     * @return ResultSetInterface
+     */
+    public function getByTipoUsuario(int $tipoUsuario): ResultSetInterface
+    {
+        return $this->tableGateway->select(['TIPO_USUARIO' => $tipoUsuario]);
+    }
 }
