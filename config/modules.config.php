@@ -8,7 +8,6 @@
 return [
     'Laminas\\Mvc\\I18n',
     'Laminas\\I18n',
-    //'Laminas\\ComposerAutoloading',
     'Laminas\\Db',
     'Laminas\\Filter',
     'Laminas\\Hydrator',
@@ -30,5 +29,6 @@ return [
     'Laminas\\ApiTools\\Versioning',
     'Laminas\\ZendFrameworkBridge',
     'Application',
-    'PruebaLocal',
+    'Applus_NormAssit',
+    'Business',
 ];

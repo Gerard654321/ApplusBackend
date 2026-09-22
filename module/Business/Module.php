@@ -1,5 +1,6 @@
 <?php
-namespace PruebaLocal;
+
+namespace Business;
 
 use Laminas\ApiTools\Provider\ApiToolsProviderInterface;
 

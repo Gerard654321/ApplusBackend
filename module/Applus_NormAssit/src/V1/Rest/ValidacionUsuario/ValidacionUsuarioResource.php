@@ -1,19 +1,19 @@
 <?php
-namespace PruebaLocal\V1\Rest\Productos;
+namespace Applus_NormAssit\V1\Rest\ValidacionUsuario;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
 use Laminas\Stdlib\Parameters;
-use RuntimeException;
+use Business\Service\UneApplusService;
+use Business\Utility\ApiResponse;
 
-class ProductosResource extends AbstractResourceListener
+class ValidacionUsuarioResource extends AbstractResourceListener
 {
-    /** @var ProductosTable */
-    protected $table;
+    private $uneApplusService;
 
-    public function __construct(ProductosTable $table)
+    public function __construct(UneApplusService $uneApplusService)
     {
-        $this->table = $table;
+        $this->uneApplusService = $uneApplusService;
     }
 
     /**
@@ -22,12 +22,31 @@ class ProductosResource extends AbstractResourceListener
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function create($data)
+    public function create($arrayData)
     {
-        $producto = new ProductosEntity();
-        $producto->exchangeArray((array) $data);
+        if (is_object($arrayData)) {
+            $arrayData = (array) $arrayData;
+        }
 
-        return $this->table->save($producto);
+        $codigoUsuario = $arrayData['codigoUsuario'] ?? null;
+        $password = $arrayData['password'] ?? null;
+
+        if (!$codigoUsuario || !$password) {
+            $response = new ApiResponse('No ingreso usuario y/o contraseña.', ApiResponse::ERROR);
+            return $response->toHttpResponse();
+        }
+
+        $validacion = $this->uneApplusService->validaUsuario($codigoUsuario, $password);
+
+        if ($validacion !== 0) {
+            $response = new ApiResponse('Usuario y contraseña incorrectos o invalidos.', ApiResponse::ERROR);
+            return $response->toHttpResponse();
+        }
+
+        $response = new ApiResponse('Login exitoso.', ApiResponse::SUCCESS, [
+            'Validacion' => $validacion
+        ]);
+        return $response->toHttpResponse();
     }
 
     /**
@@ -60,11 +79,7 @@ class ProductosResource extends AbstractResourceListener
      */
     public function fetch($id)
     {
-        try {
-            return $this->table->fetch($id);
-        } catch (RuntimeException $e) {
-            return new ApiProblem(404, $e->getMessage());
-        }
+        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
     }
 
     /**
@@ -75,7 +90,7 @@ class ProductosResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        return $this->table->fetchAll();
+        return new ApiProblem(405, 'The GET method has not been defined for collections');
     }
 
     /**
@@ -121,14 +136,6 @@ class ProductosResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        try {
-            $producto = $this->table->fetch($id);
-        } catch (RuntimeException $e) {
-            return new ApiProblem(404, $e->getMessage());
-        }
-
-        $producto->exchangeArray((array) $data + $producto->getArrayCopy());
-
-        return $this->table->save($producto);
+        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
     }
 }

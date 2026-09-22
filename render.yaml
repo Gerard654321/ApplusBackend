@@ -2,7 +2,7 @@ services:
   - type: web
     name: applus-backend
     env: docker
-    dockerfilePath: ./Dockerfile.render
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     plan: free
     envVars:
