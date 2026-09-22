@@ -2,7 +2,7 @@
     "name": "laminas-api-tools/api-tools-skeleton",
     "description": "Skeleton Application for Laminas API Tools",
     "type": "project",
-    "license": "BSD-3-Clause",
+    "license": "proprietary",
     "keywords": [
         "laminas",
         "api-tools",
