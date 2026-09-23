@@ -145,7 +145,14 @@ class DocumentosApplusResource extends AbstractResourceListener
             return $response->toHttpResponse();
         }
 
-        $resultado = $this->documentsAppTable->updateExpirationDate((int) $id, $expirationDate);
+        $fecha = $this->parseExpirationDate($expirationDate);
+
+        if (!$fecha) {
+            $response = new ApiResponse('Formato de fecha invalido. Use dd/mm/aaaa o aaaa-mm-dd.', ApiResponse::ERROR);
+            return $response->toHttpResponse();
+        }
+
+        $resultado = $this->documentsAppTable->updateExpirationDate((int) $id, $fecha->format('Y-m-d'));
 
         if ($resultado === 0) {
             return new ApiProblem(404, 'Documento no encontrado.');
@@ -155,5 +162,26 @@ class DocumentosApplusResource extends AbstractResourceListener
             'Actualizacion' => $resultado
         ]);
         return $response->toHttpResponse();
+    }
+
+    /**
+     * Acepta dd/mm/aaaa o aaaa-mm-dd y devuelve un DateTime valido, o null si no calza con ninguno.
+     *
+     * @param string $expirationDate
+     * @return \DateTime|null
+     */
+    private function parseExpirationDate(string $expirationDate): ?\DateTime
+    {
+        foreach (['d/m/Y', 'Y-m-d'] as $formato) {
+            $fecha = \DateTime::createFromFormat($formato, $expirationDate);
+            $errores = \DateTime::getLastErrors();
+            $sinErrores = $errores === false || ($errores['warning_count'] === 0 && $errores['error_count'] === 0);
+
+            if ($fecha && $sinErrores) {
+                return $fecha;
+            }
+        }
+
+        return null;
     }
 }
