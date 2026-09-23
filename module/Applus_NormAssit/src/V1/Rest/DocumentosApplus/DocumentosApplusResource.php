@@ -73,6 +73,8 @@ class DocumentosApplusResource extends AbstractResourceListener
 
         if ($userData && $typeDocument) {
             $resultSet = $this->documentsAppTable->getByUserDataAndType($userData, $typeDocument);
+        } elseif ($userData) {
+            $resultSet = $this->documentsAppTable->getByUserData($userData);
         } elseif ($typeDocument) {
             $resultSet = $this->documentsAppTable->getByTypeDocument($typeDocument);
         } else {

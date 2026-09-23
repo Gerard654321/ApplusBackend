@@ -56,6 +56,17 @@ class DocumentsAppTable
     }
 
     /**
+     * Devuelve todos los documentos de un usuario.
+     *
+     * @param string $userData
+     * @return ResultSetInterface
+     */
+    public function getByUserData(string $userData): ResultSetInterface
+    {
+        return $this->tableGateway->select(['USER_DATA' => $userData]);
+    }
+
+    /**
      * Devuelve los documentos de un tipo de documento determinado.
      *
      * @param string $typeDocument

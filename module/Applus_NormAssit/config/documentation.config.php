@@ -111,15 +111,18 @@ Errores posibles según el caso: "Usuario no encontrado.", "Usuario inactivo.", 
         'description' => 'Consulta y actualización de los documentos de la app (tabla DOCUMENTS_APP).',
         'collection' => [
             'GET' => [
-                'description' => 'Devuelve documentos, con filtros opcionales por query param. Sin ningun parametro trae todos. Con "typeDocument" filtra por tipo de documento. Con "userData" y "typeDocument" juntos filtra por el usuario dueño del documento y el tipo.',
+                'description' => 'Devuelve documentos, con filtros opcionales por query param. Sin ningun parametro trae todos. Con "userData" filtra por usuario dueño del documento. Con "typeDocument" filtra por tipo de documento. Con ambos juntos filtra por usuario y tipo a la vez.',
                 'request' => 'Todos los documentos:
 GET /applus/documentos-applus
 
+Por usuario:
+GET /applus/documentos-applus?userData=1
+
 Por tipo de documento:
-GET /applus/documentos-applus?typeDocument=DNI
+GET /applus/documentos-applus?typeDocument=1
 
 Por usuario y tipo de documento:
-GET /applus/documentos-applus?userData=SPENA&typeDocument=DNI',
+GET /applus/documentos-applus?userData=1&typeDocument=1',
                 'response' => '{
     "type": "success",
     "message": "",
