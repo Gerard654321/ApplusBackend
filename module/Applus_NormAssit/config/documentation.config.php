@@ -78,7 +78,7 @@ La contraseña nunca se incluye en la respuesta.',
 Si el CODIGO_USUARIO no existe, responde 404 con: {"type": "error", "message": "Usuario no encontrado."}',
             ],
             'PUT' => [
-                'description' => 'Según el campo TIPO enviado en el body, actualiza los datos de perfil del usuario (TIPO 1) o su contraseña (TIPO 2). Para cambiar la contraseña hay que mandar la actual, la función de base de datos la valida antes de guardar la nueva.',
+                'description' => 'Según el campo TIPO enviado en el body, actualiza los datos de perfil del usuario (TIPO 1) o su contraseña (TIPO 2). TIPO 1 es un UPDATE directo sobre APP_USUARIOS, sin pasar por ninguna función de la base. TIPO 2 sí pasa por pkg_app_seguridad.ft_actualiza_password, porque ahí se valida y encripta la contraseña.',
                 'request' => 'TIPO 1 (actualizar datos):
 {
     "TIPO": 1,
@@ -97,13 +97,15 @@ TIPO 2 (cambiar contraseña):
     "passwordActual": "AdminApplus2026",
     "passwordNuevo": "NuevaClave2026"
 }',
-                'response' => 'Datos actualizados:
-{"type": "success", "message": "Datos actualizados correctamente.", "Actualizacion": 0}
+                'response' => 'Datos actualizados (TIPO 1):
+{"type": "success", "message": "Datos actualizados correctamente.", "Actualizacion": 1}
+Si el CODIGO_USUARIO no existe, responde 404 con: "Usuario no encontrado."
 
-Contraseña actualizada:
+Contraseña actualizada (TIPO 2):
 {"type": "success", "message": "Contraseña actualizada correctamente.", "Actualizacion": 0}
+Errores posibles según el caso: "Usuario no encontrado.", "Usuario inactivo.", "Contraseña actual incorrecta."
 
-Errores posibles según el caso: "Usuario no encontrado.", "Usuario inactivo.", "Contraseña actual incorrecta.", o "TIPO invalido..." si no se manda 1 ni 2.',
+En ambos casos, si TIPO no es 1 ni 2, responde 400 con: "TIPO invalido..."',
             ],
         ],
     ],

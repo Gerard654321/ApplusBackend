@@ -266,14 +266,8 @@ class ValidacionUsuarioResource extends AbstractResourceListener
             (int) ($data['tipoUsuario'] ?? 0)
         );
 
-        if ($resultado === 1) {
-            $response = new ApiResponse('Usuario no encontrado.', ApiResponse::ERROR);
-            return $response->toHttpResponse();
-        }
-
-        if ($resultado !== 0) {
-            $response = new ApiResponse('No se pudieron actualizar los datos.', ApiResponse::ERROR);
-            return $response->toHttpResponse();
+        if ($resultado === 0) {
+            return new ApiProblem(404, 'Usuario no encontrado.');
         }
 
         $response = new ApiResponse('Datos actualizados correctamente.', ApiResponse::SUCCESS, [

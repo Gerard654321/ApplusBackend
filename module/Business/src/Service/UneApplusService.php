@@ -81,7 +81,7 @@ class UneApplusService {
     }
 
     /**
-     * Actualiza los datos de perfil de un usuario.
+     * Actualiza los datos de perfil de un usuario
      *
      * @param string $codUsuario
      * @param string $apellidoPaterno
@@ -91,7 +91,7 @@ class UneApplusService {
      * @param string $correoElectronico
      * @param int $codigoEstado
      * @param int $tipoUsuario
-     * @return int
+     * @return int Filas afectadas (0 = usuario no encontrado)
      */
     public function actualizaUsuario(
         string $codUsuario,
@@ -103,21 +103,16 @@ class UneApplusService {
         int $codigoEstado,
         int $tipoUsuario
     ): int {
-        $result = $this->adapter->query(
-            'SELECT pkg_app_seguridad.ft_actualiza_usuario(?, ?, ?, ?, ?, ?, ?, ?) AS resultado',
-            [
-                trim($codUsuario),
-                $apellidoPaterno,
-                $apellidoMaterno,
-                $nombreUsuario,
-                $numeroCelular,
-                $correoElectronico,
-                $codigoEstado,
-                $tipoUsuario,
-            ]
+        return $this->appUsuariosTable->updateDatosUsuario(
+            $codUsuario,
+            $apellidoPaterno,
+            $apellidoMaterno,
+            $nombreUsuario,
+            $numeroCelular,
+            $correoElectronico,
+            $codigoEstado,
+            $tipoUsuario
         );
-
-        return (int) $result->current()['resultado'];
     }
 
     /**
